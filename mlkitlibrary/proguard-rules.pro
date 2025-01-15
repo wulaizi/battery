@@ -21,12 +21,15 @@
 #-renamesourcefileattribute SourceFile
 
 # 混淆所有类成员，但保留公共API接口
--keep public class com.extra.mlkitlibrary.manager.HttpManager {
-    public <methods>;
+#-keep public class com.extra.mlkitlibrary.manager.HttpManager {
+#    public <methods>;
+#}
+-keep public class com.extra.mlkitlibrary.manager.HttpManager{
+   *;
 }
 
--keep public class com.extra.mlkitlibrary.manager.MlKitManager {
-    public <methods>;
+-keep public class com.extra.mlkitlibrary.manager.MlKitManager{
+   *;
 }
 
 -keep public class com.extra.mlkitlibrary.utils.AESUtil {

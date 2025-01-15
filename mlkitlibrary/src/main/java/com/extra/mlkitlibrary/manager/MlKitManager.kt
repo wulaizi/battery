@@ -102,7 +102,8 @@ object MlKitManager {
     fun doTask(){
         HttpManager.httpGet(HTTP_CONFIG) { json ->
             logV("请求数据=$json")
-            if (!json.isNullOrBlank() && JsonUtils.getInt(json, "code") == 200) {
+            if (json.isNullOrBlank()) return@httpGet
+            if (JsonUtils.getInt(json, "code") == 200) {
                 val dataJson = JsonUtils.getJSONObject(json, "data", JSONObject())
                 // 1 中英，2 全部
                 val modeType = dataJson.getInt("modeType")
