@@ -40,7 +40,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(project(":mlkitlibrary"))
+//    implementation(project(":mlkitlibrary"))
+    implementation("com.extra.mlkitlibrary:mlkitlibrary:1.4")
 }
 
 

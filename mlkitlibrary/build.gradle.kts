@@ -29,7 +29,7 @@ android {
             )
         }
         release {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -64,7 +64,7 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "com.extra.mlkitlibrary"
             artifactId = "mlkitlibrary"
-            version = "1.0"
+            version = "1.4"
 
             afterEvaluate {
                 from(components["release"])
@@ -74,4 +74,4 @@ publishing {
 }
 
 group = "com.extra.mlkitlibrary"
-version = "1.0"
+version = "1.4"
