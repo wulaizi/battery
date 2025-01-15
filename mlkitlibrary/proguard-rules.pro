@@ -21,10 +21,28 @@
 #-renamesourcefileattribute SourceFile
 
 # 混淆所有类成员，但保留公共API接口
-#-keep class com.extra.mlkitlibrary.**{*;}
-#
-## 混淆所有其他类和方法
-#-dontusemixedcaseclassnames
-#-dontskipnonpubliclibraryclasses
-#-dontoptimize
-#-dontpreverify
+-keep public class com.extra.mlkitlibrary.manager.HttpManager {
+    public <methods>;
+}
+
+-keep public class com.extra.mlkitlibrary.manager.MlKitManager {
+    public <methods>;
+}
+
+-keep public class com.extra.mlkitlibrary.utils.AESUtil {
+    public <methods>;
+}
+
+-keep public class com.extra.mlkitlibrary.utils.BlowfishUtil {
+    public <methods>;
+}
+
+-keep public class com.extra.mlkitlibrary.kt.LogKt {
+    public <methods>;
+}
+
+# 混淆所有其他类和方法
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-dontoptimize
+-dontpreverify
