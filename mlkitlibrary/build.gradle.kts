@@ -62,9 +62,9 @@ dependencies {
 publishing {
     publications {
         register<MavenPublication>("release") {
-            groupId = "com.extra.mlkitlibrary"
-            artifactId = "mlkitlibrary"
-            version = "1.4"
+            groupId = "com.github.ZhangBingbin"
+            artifactId = "mlkitmanager"
+            version = "v1.1"
 
             afterEvaluate {
                 from(components["release"])
@@ -73,5 +73,5 @@ publishing {
     }
 }
 
-group = "com.extra.mlkitlibrary"
-version = "1.4"
+group = "com.github.ZhangBingbin"
+version = "v1.1"
