@@ -62,8 +62,8 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 // 然后可以根据下面的示例自定义发布的属性
                 groupId = "com.github.ZhangBingbin"
-                artifactId = "android-mlkit-manager"
-                version = "0.0.1"
+                artifactId = "mlkitmanager"
+                version = "v0.0.2"
             }
         }
     }

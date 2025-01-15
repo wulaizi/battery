@@ -14,6 +14,7 @@ bouncycastle = "1.70"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
+mlkitmanager = "tag0.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -27,6 +28,7 @@ okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhtt
 blankj-utilcodex = { group = "com.blankj", name = "utilcodex", version.ref = "blankj-version" }
 permissionx = { module = "com.guolindev.permissionx:permissionx", version.ref = "permissionx" }
 bouncycastle = { module = "org.bouncycastle:bcprov-jdk15on", version.ref = "bouncycastle" }
+mlkitmanager = { module = "com.github.ZhangBingbin:mlkitmanager", version.ref = "mlkitmanager" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

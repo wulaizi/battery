@@ -16,9 +16,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven(url = "https://jitpack.io"){
-            credentials { username="" }
-        }
+        maven(url = "https://jitpack.io")
     }
 }
 
