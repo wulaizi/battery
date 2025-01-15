@@ -3,6 +3,7 @@ import org.gradle.internal.impldep.bsh.commands.dir
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.maven.publish)
 }
 
 android {
@@ -41,7 +42,21 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.mlkitmanager)
-//    implementation(project(":mlkitlibrary"))
+    implementation(project(":mlkitlibrary"))
 }
+
+afterEvaluate {
+    publishing {
+        publications {
+            // 创建一个名为 "release" 的 Maven 发布
+            create<MavenPublication>("release") {
+                // 然后可以根据下面的示例自定义发布的属性
+                groupId = "com.github.ZhangBingbin"
+                artifactId = "mlkitmanager"
+                version = "v0.0.3"
+            }
+        }
+    }
+}
+
 

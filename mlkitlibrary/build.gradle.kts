@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.maven.publish)
 }
 
 android {
@@ -55,16 +54,3 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            // 创建一个名为 "release" 的 Maven 发布
-            create<MavenPublication>("release") {
-                // 然后可以根据下面的示例自定义发布的属性
-                groupId = "com.github.ZhangBingbin"
-                artifactId = "mlkitmanager"
-                version = "v0.0.2"
-            }
-        }
-    }
-}

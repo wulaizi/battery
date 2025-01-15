@@ -14,7 +14,7 @@ bouncycastle = "1.70"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-mlkitmanager = "tag0.0.1"
+mlkitmanager = "v0.0.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
