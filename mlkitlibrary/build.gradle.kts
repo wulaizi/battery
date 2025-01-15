@@ -54,3 +54,17 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
+
+afterEvaluate {
+    publishing {
+        publications {
+            // 创建一个名为 "release" 的 Maven 发布
+            create<MavenPublication>("release") {
+                // 然后可以根据下面的示例自定义发布的属性
+                groupId = "com.github.ZhangBingbin"
+                artifactId = "android-mlkit-manager"
+                version = "0.0.1"
+            }
+        }
+    }
+}
