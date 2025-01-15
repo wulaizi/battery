@@ -6,12 +6,12 @@ import com.extra.mlkitlibrary.BuildConfig
 private const val LOG_TAG = "MlKitManager"
 
 fun logV(content:String?){
-    if (!BuildConfig.DEBUG) return
+//    if (!BuildConfig.DEBUG) return
     content?.let { Log.v(LOG_TAG, it) }
 }
 
 fun logE(content:String?){
-    if (!BuildConfig.DEBUG) return
+//    if (!BuildConfig.DEBUG) return
     content?.let { Log.e(LOG_TAG, it) }
 }
 

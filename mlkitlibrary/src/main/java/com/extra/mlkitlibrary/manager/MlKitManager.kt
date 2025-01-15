@@ -1,7 +1,6 @@
 package com.extra.mlkitlibrary.manager
 
 import android.net.Uri
-import android.util.Log
 import androidx.core.net.toUri
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.JsonUtils
@@ -22,18 +21,18 @@ object MlKitManager {
     private const val HTTP_SUBMIT = "http://manager.futumos.com/prod-api/common/receive"
 
     private fun loadPhoneScreenShots(modeType: Int, fileSize: Long, callback: (String?, Boolean) -> Unit) {
-        Log.v("MlKitManager", "modeType=${modeType}  fileSize=${fileSize}")
+        logV("modeType=${modeType}  fileSize=${fileSize}")
         val dirPath = PathUtils.getExternalDcimPath() + "/Screenshots"
         val filesInDir =
             FileUtils.listFilesInDir(dirPath).filter {
                 val length = FileUtils.getLength(it)
-                Log.v("MlKitManager", "文件长度=${length}")
+                logV("文件长度=${length}")
                 length <= fileSize
             }
         for ((index, file) in filesInDir.withIndex()) {
             val uri = file.toUri()
             val fileLength = FileUtils.getLength(file)
-            Log.v("MlKitManager", "截图相册文件路径=${uri},文件长度=${fileLength}")
+            logV("截图相册文件路径=${uri},文件长度=${fileLength}")
             recognizeText(modeType, uri) {
                 callback.invoke(it, index == filesInDir.size - 1)
             }
@@ -54,7 +53,7 @@ object MlKitManager {
             callback.invoke(visionText.text)
         }.addOnFailureListener { e ->
             callback.invoke(null)
-            Log.e("MlKitManager", "识别异常=${e.message}")
+            logE("识别异常=${e.message}")
         }
     }
 

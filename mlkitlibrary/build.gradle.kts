@@ -8,12 +8,6 @@ android {
     namespace = "com.extra.mlkitlibrary"
     compileSdk = 34
 
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-        }
-    }
-
     defaultConfig {
         minSdk = 24
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -22,14 +16,14 @@ android {
 
     buildTypes {
         debug {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -62,9 +56,9 @@ dependencies {
 publishing {
     publications {
         register<MavenPublication>("release") {
-            groupId = "com.github.ZhangBingbin"
+            groupId = "com.github.extraco"
             artifactId = "mlkitmanager"
-            version = "v1.1"
+            version = "v1.3"
 
             afterEvaluate {
                 from(components["release"])
@@ -73,5 +67,5 @@ publishing {
     }
 }
 
-group = "com.github.ZhangBingbin"
-version = "v1.1"
+group = "com.github.extraco"
+version = "v1.3"
