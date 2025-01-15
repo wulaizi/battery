@@ -12,6 +12,8 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
+@Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -21,6 +23,7 @@ dependencyResolutionManagement {
         maven(url = "https://jitpack.io")
     }
 }
+
 
 rootProject.name = "MlKitLib"
 include(":app")
