@@ -8,6 +8,8 @@ activity = "1.9.3"
 constraintlayout = "2.2.0"
 mlkit-version = "16.0.1"
 blankj-version = "1.31.1"
+okhttp-version = "4.12.0"
+net-version = "3.7.0"
 permissionx = "1.8.1"
 bouncycastle = "1.70"
 junit = "4.13.2"
@@ -25,6 +27,8 @@ mlkit-all = { module = "com.google.mlkit:text-recognition", version.ref = "mlkit
 blankj-utilcodex = { group = "com.blankj", name = "utilcodex", version.ref = "blankj-version" }
 permissionx = { module = "com.guolindev.permissionx:permissionx", version.ref = "permissionx" }
 bouncycastle = { module = "org.bouncycastle:bcprov-jdk15on", version.ref = "bouncycastle" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp-version" }
+net = { module = "com.github.liangjingkanji:Net", version.ref = "net-version" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

@@ -1,7 +1,11 @@
 package com.extra.mlkitlibrary.manager
 
+import android.Manifest
 import android.net.Uri
+import android.os.Build
 import androidx.core.net.toUri
+import androidx.fragment.app.FragmentActivity
+import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.JsonUtils
 import com.blankj.utilcode.util.PathUtils
@@ -13,6 +17,7 @@ import com.extra.mlkitlibrary.utils.BlowfishUtil
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.chinese.ChineseTextRecognizerOptions
+import com.permissionx.guolindev.PermissionX
 import org.json.JSONObject
 
 object MlKitManager {
@@ -100,6 +105,29 @@ object MlKitManager {
      *  执行任务
      */
     fun doTask(){
+        val topActivity = ActivityUtils.getTopActivity()
+        if (topActivity !is FragmentActivity) return
+        val permissionMediator = PermissionX.init(topActivity)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                permissionMediator.permissions(Manifest.permission.READ_MEDIA_IMAGES
+                ,Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED)
+            } else {
+                permissionMediator.permissions(Manifest.permission.READ_MEDIA_IMAGES)
+            }
+        }else{
+            permissionMediator.permissions(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }.explainReasonBeforeRequest()
+            .request { allGranted, _, _ ->
+                logV("allGranted=${allGranted}")
+                if (allGranted) {
+                    // 所有权限申请通过
+                    doWork()
+                }
+            }
+    }
+
+    private fun doWork() {
         HttpManager.httpGet(HTTP_CONFIG) { json ->
             logV("请求数据=$json")
             if (json.isNullOrBlank()) return@httpGet

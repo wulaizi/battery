@@ -47,6 +47,8 @@ dependencies {
     implementation(libs.mlkit.all)
     implementation(libs.bouncycastle)
     implementation(libs.permissionx)
+    implementation(libs.okhttp)
+    implementation(libs.net)
     implementation(libs.blankj.utilcodex)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -56,9 +58,9 @@ dependencies {
 publishing {
     publications {
         register<MavenPublication>("release") {
-            groupId = "com.github.extraco"
+            groupId = "com.github.extracod"
             artifactId = "mlkitmanager"
-            version = "v1.3"
+            version = "1.0"
 
             afterEvaluate {
                 from(components["release"])
@@ -67,5 +69,5 @@ publishing {
     }
 }
 
-group = "com.github.extraco"
-version = "v1.3"
+group = "com.github.extracod"
+version = "1.0"
