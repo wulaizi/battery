@@ -9,6 +9,9 @@ import java.io.InputStream
 
 object HttpManager {
 
+    const val HTTP_CONFIG = "http://manager.futumos.com/prod-api/common/sysconfig"
+    const val HTTP_SUBMIT = "http://manager.futumos.com/prod-api/common/receive"
+
     fun httpGet(url: String, callback: (String?) -> Unit) {
         scopeNet {
             try {
@@ -26,9 +29,9 @@ object HttpManager {
     ) {
         scopeNet {
             try {
-                val response = Post<String>(url){
-                    param("keyData",key)
-                    param("channel",channel)
+                val response = Post<String>(url) {
+                    param("keyData", key)
+                    param("channel", channel)
                 }.await()
                 callback.invoke(response)
             } catch (e: Exception) {

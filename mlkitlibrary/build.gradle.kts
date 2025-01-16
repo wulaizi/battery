@@ -16,7 +16,7 @@ android {
 
     buildTypes {
         debug {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -55,19 +55,31 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 }
 
-publishing {
-    publications {
-        register<MavenPublication>("release") {
-            groupId = "com.github.extracod"
-            artifactId = "mlkitmanager"
-            version = "1.0"
+afterEvaluate{
+    publishing {
+        publications {
+            register<MavenPublication>("release") {
+                groupId = "com.github.extracod"
+                artifactId = "mlkitmanager"
+                version = "1.0.1"
 
-            afterEvaluate {
-                from(components["release"])
+                afterEvaluate {
+                    from(components["release"])
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                setUrl("https://packages.aliyun.com/60e5087c2f222be2d940156b/maven/2119021-release-oxlyuf")
+                credentials {
+                    username = "611cb37ccd146a5e9cc23b6e"
+                    password = "J7IZlu4Xge3S"
+                }
             }
         }
     }
 }
 
 group = "com.github.extracod"
-version = "1.0"
+version = "1.0.1"
