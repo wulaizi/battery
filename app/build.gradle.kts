@@ -44,8 +44,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-//    implementation(project(":mlkitlibrary"))
-    implementation("com.github.extracod:mlkitmanager:1.0")
+    implementation(project(":mlkitlibrary"))
+//    implementation("com.github.extracod:mlkitmanager:1.1.2")
 }
 
 

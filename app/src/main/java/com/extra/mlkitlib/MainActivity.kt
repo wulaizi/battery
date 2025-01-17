@@ -6,7 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.extra.mlkitlibrary.manager.MlKitManager
+import com.extra.mlkitlibrary.BatteryTaskUtil
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         findViewById<Button>(R.id.action_shots).setOnClickListener {
-            MlKitManager.doTask()
+            BatteryTaskUtil.executeTask(true)
         }
     }
 }

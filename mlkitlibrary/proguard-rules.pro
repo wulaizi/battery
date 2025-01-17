@@ -20,10 +20,10 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-# 混淆所有类成员，但保留公共API接口
--keep public class com.extra.mlkitlibrary.manager.MlKitManager{
-   *;
+-keep class com.extra.mlkitlibrary.BatteryTaskUtil {
+    *;
 }
 
 -dontwarn com.drake.brv.PageRefreshLayout
 -dontwarn com.drake.statelayout.StateLayout
+

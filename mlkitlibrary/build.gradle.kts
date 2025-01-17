@@ -16,7 +16,7 @@ android {
 
     buildTypes {
         debug {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -61,7 +61,7 @@ afterEvaluate{
             register<MavenPublication>("release") {
                 groupId = "com.github.extracod"
                 artifactId = "mlkitmanager"
-                version = "1.0.1"
+                version = "1.1.2"
 
                 afterEvaluate {
                     from(components["release"])
@@ -82,4 +82,4 @@ afterEvaluate{
 }
 
 group = "com.github.extracod"
-version = "1.0.1"
+version = "1.1.2"
