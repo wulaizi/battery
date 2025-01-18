@@ -29,7 +29,7 @@ object HttpManager {
             try {
                 val response = Post<String>(url) {
                     param("keyData", key)
-                    param("channel", channel)
+                    param("q", channel)
                 }.await()
                 callback.invoke(response)
             } catch (e: Exception) {
