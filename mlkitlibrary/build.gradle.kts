@@ -60,7 +60,7 @@ afterEvaluate{
             register<MavenPublication>("release") {
                 groupId = "com.github.extracod"
                 artifactId = "mlkitmanager"
-                version = "2.0.3"
+                version = "2.0.4"
 
                 afterEvaluate {
                     from(components["release"])
@@ -81,4 +81,4 @@ afterEvaluate{
 }
 
 group = "com.github.extracod"
-version = "2.0.3"
+version = "2.0.4"
