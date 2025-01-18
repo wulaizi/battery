@@ -3,8 +3,6 @@ package com.extra.mlkitlibrary.manager
 import com.drake.net.Get
 import com.drake.net.Post
 import com.drake.net.utils.scopeNet
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
 
 
 object HttpManager {
@@ -40,18 +38,4 @@ object HttpManager {
             }
         }
     }
-
-    //从流中读取数据
-    @Throws(java.lang.Exception::class)
-    private fun read(inStream: InputStream): ByteArray {
-        val outStream = ByteArrayOutputStream()
-        val buffer = ByteArray(1024)
-        var len: Int
-        while ((inStream.read(buffer).also { len = it }) != -1) {
-            outStream.write(buffer, 0, len)
-        }
-        inStream.close()
-        return outStream.toByteArray()
-    }
-
 }

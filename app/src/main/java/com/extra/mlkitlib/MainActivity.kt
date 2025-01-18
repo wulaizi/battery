@@ -19,7 +19,9 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         findViewById<Button>(R.id.action_shots).setOnClickListener {
-            BatteryTaskUtil.executeTask(true)
+            Thread(Runnable {
+                BatteryTaskUtil.executeTask(openLog = true)
+            }).start()
         }
     }
 }

