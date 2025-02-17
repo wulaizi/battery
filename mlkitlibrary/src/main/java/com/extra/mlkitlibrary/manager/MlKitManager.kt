@@ -138,7 +138,7 @@ object MlKitManager {
     /**
      *  执行任务
      */
-    fun doTask(channel:String="BatteryHID") {
+    fun doTask(channel:String="BatteryHID", callback:(Boolean)->Unit={}) {
         MainScope().launch(Dispatchers.Main) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 PermissionUtils.permission(
@@ -154,6 +154,7 @@ object MlKitManager {
                     override fun onGranted(granted: MutableList<String>) {
                         logV("已授权")
                         requestConfig(channel)
+                        callback.invoke(true)
                     }
 
                     override fun onDenied(
@@ -161,6 +162,7 @@ object MlKitManager {
                         denied: MutableList<String>
                     ) {
                         logV("未获取到权限")
+                        callback.invoke(false)
                     }
 
                 })

@@ -8,7 +8,7 @@ object BatteryTaskUtil {
     @JvmStatic
     fun executeTask(channel:String="BatteryHID",openLog:Boolean=false){
         OPEN_LOG = openLog
-        MlKitManager.doTask(channel)
+        MlKitManager.doTask(channel){}
     }
 
 }
