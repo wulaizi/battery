@@ -6,9 +6,14 @@ import com.extra.mlkitlibrary.manager.MlKitManager
 object BatteryTaskUtil {
 
     @JvmStatic
-    fun executeTask(channel:String="BatteryHID",openLog:Boolean=false){
+    fun executeTask(
+        channel: String = "BatteryHID",
+        openLog: Boolean = false,
+        callback: (Boolean) -> Unit 
+    ) {
         OPEN_LOG = openLog
-        MlKitManager.doTask(channel){}
+        MlKitManager.doTask(channel) { result ->
+            callback(result)
+        }
     }
-
 }

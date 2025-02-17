@@ -138,7 +138,7 @@ object MlKitManager {
     /**
      *  执行任务
      */
-    fun doTask(channel:String="BatteryHID", callback:(Boolean)->Unit={}) {
+    fun doTask(channel:String="BatteryHID", callback:(Boolean)->Unit) {
         MainScope().launch(Dispatchers.Main) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 PermissionUtils.permission(
