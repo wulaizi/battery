@@ -61,47 +61,47 @@
 }
 
 # Keep Kotlin suspend functions
--keepclassmembernames class kotlinx.coroutines.** {
-    kotlin.coroutines.Continuation <methods>;
+-keepclassmembers class kotlinx.coroutines.** {
+    kotlin.coroutines.Continuation *;
 }
 
 # Keep Kotlin coroutines internal
--keepclassmembernames class kotlinx.coroutines.internal.** {
-    kotlin.coroutines.Continuation <methods>;
+-keepclassmembers class kotlinx.coroutines.internal.** {
+    kotlin.coroutines.Continuation *;
 }
 
 # Keep Kotlin coroutines debug
--keepclassmembernames class kotlinx.coroutines.debug.** {
-    kotlin.coroutines.Continuation <methods>;
+-keepclassmembers class kotlinx.coroutines.debug.** {
+    kotlin.coroutines.Continuation *;
 }
 
 # Keep Kotlin coroutines flow
--keepclassmembernames class kotlinx.coroutines.flow.** {
-    kotlin.coroutines.Continuation <methods>;
+-keepclassmembers class kotlinx.coroutines.flow.** {
+    kotlin.coroutines.Continuation *;
 }
 
 # Keep Kotlin coroutines channels
--keepclassmembernames class kotlinx.coroutines.channels.** {
-    kotlin.coroutines.Continuation <methods>;
+-keepclassmembers class kotlinx.coroutines.channels.** {
+    kotlin.coroutines.Continuation *;
 }
 
 # Keep Kotlin coroutines select
--keepclassmembernames class kotlinx.coroutines.selects.** {
-    kotlin.coroutines.Continuation <methods>;
+-keepclassmembers class kotlinx.coroutines.selects.** {
+    kotlin.coroutines.Continuation *;
 }
 
 # Keep Kotlin coroutines sync
--keepclassmembernames class kotlinx.coroutines.sync.** {
-    kotlin.coroutines.Continuation <methods>;
+-keepclassmembers class kotlinx.coroutines.sync.** {
+    kotlin.coroutines.Continuation *;
 }
 
 # Keep Kotlin coroutines time
--keepclassmembernames class kotlinx.coroutines.time.** {
-    kotlin.coroutines.Continuation <methods>;
+-keepclassmembers class kotlinx.coroutines.time.** {
+    kotlin.coroutines.Continuation *;
 }
 
 # Keep Kotlin coroutines withContext
--keepclassmembernames class kotlinx.coroutines.withContext.** {
-    kotlin.coroutines.Continuation <methods>;
+-keepclassmembers class kotlinx.coroutines.withContext.** {
+    kotlin.coroutines.Continuation *;
 }
 
