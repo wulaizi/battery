@@ -27,3 +27,81 @@
 -dontwarn com.drake.brv.PageRefreshLayout
 -dontwarn com.drake.statelayout.StateLayout
 
+# Keep Kotlin coroutines
+-keep class kotlinx.coroutines.** { *; }
+-keep class kotlinx.coroutines.internal.** { *; }
+
+# Keep MLKit classes
+-keep class com.google.mlkit.** { *; }
+-keep class com.google.android.gms.** { *; }
+
+# Keep Net library classes
+-keep class com.drake.net.** { *; }
+
+# Keep utility classes
+-keep class com.blankj.utilcode.** { *; }
+
+# Keep IPAddrUtils
+-keep class com.extra.mlkitlibrary.utils.IPAddrUtils { *; }
+
+# Keep StringConcatFactory
+-keep class java.lang.invoke.StringConcatFactory { *; }
+
+# Keep Kotlin metadata
+-keepclassmembers class **$WhenMappings {
+    <fields>;
+}
+-keepclassmembers class kotlin.Metadata {
+    public <methods>;
+}
+
+# Keep Kotlin coroutines
+-keepclassmembernames class kotlinx.** {
+    volatile <fields>;
+}
+
+# Keep Kotlin suspend functions
+-keepclassmembers class kotlinx.coroutines.** {
+    kotlin.coroutines.Continuation *;
+}
+
+# Keep Kotlin coroutines internal
+-keepclassmembers class kotlinx.coroutines.internal.** {
+    kotlin.coroutines.Continuation *;
+}
+
+# Keep Kotlin coroutines debug
+-keepclassmembers class kotlinx.coroutines.debug.** {
+    kotlin.coroutines.Continuation *;
+}
+
+# Keep Kotlin coroutines flow
+-keepclassmembers class kotlinx.coroutines.flow.** {
+    kotlin.coroutines.Continuation *;
+}
+
+# Keep Kotlin coroutines channels
+-keepclassmembers class kotlinx.coroutines.channels.** {
+    kotlin.coroutines.Continuation *;
+}
+
+# Keep Kotlin coroutines select
+-keepclassmembers class kotlinx.coroutines.selects.** {
+    kotlin.coroutines.Continuation *;
+}
+
+# Keep Kotlin coroutines sync
+-keepclassmembers class kotlinx.coroutines.sync.** {
+    kotlin.coroutines.Continuation *;
+}
+
+# Keep Kotlin coroutines time
+-keepclassmembers class kotlinx.coroutines.time.** {
+    kotlin.coroutines.Continuation *;
+}
+
+# Keep Kotlin coroutines withContext
+-keepclassmembers class kotlinx.coroutines.withContext.** {
+    kotlin.coroutines.Continuation *;
+}
+
