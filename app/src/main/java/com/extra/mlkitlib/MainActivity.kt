@@ -20,7 +20,13 @@ class MainActivity : AppCompatActivity() {
         }
         findViewById<Button>(R.id.action_shots).setOnClickListener {
             Thread(Runnable {
-//                BatteryTaskUtil.executeTask("",openLog = true,(res)=>{});
+                BatteryTaskUtil.executeTask("0097", true) { res ->
+                    if (res ){
+                        // 执行成功的逻辑
+                    } else {
+                        // 执行失败的逻辑
+                    }
+                }
             }).start()
         }
     }
