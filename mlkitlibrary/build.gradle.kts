@@ -86,16 +86,16 @@ afterEvaluate{
             }
         }
 
-        // repositories {
-        //     maven {
-        //         name = "GitPack"
-        //         url = uri("https://gitpack.io/com/github/extracod/mlkitmanager")
-        //         credentials {
-        //             username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_USERNAME")
-        //             password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
-        //         }
-        //     }
-        // }
+        repositories {
+            maven {
+                name = "GitPack"
+                url = uri("https://gitpack.io/com/github/extracod/mlkitmanager")
+                credentials {
+                    username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_USERNAME")
+                    password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
+                }
+            }
+        }
     }
 }
 
