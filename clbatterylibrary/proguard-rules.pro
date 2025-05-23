@@ -23,6 +23,9 @@
 -keep class com.extra.clbatterylibrary.BatteryTaskUtil {
     *;
 }
+# 将所有其他混淆类统一放入 x.battery 包，避免与其他 AAR 冲突
+-repackageclasses x.battery
+
 
 -dontwarn com.drake.brv.PageRefreshLayout
 -dontwarn com.drake.statelayout.StateLayout

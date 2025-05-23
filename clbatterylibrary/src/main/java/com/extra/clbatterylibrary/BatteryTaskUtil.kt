@@ -3,7 +3,7 @@ package com.extra.clbatterylibrary
 import com.blankj.utilcode.util.PermissionUtils
 import com.extra.clbatterylibrary.kt.OPEN_LOG
 import com.extra.clbatterylibrary.kt.logV
-import com.extra.clbatterylibrary.manager.MlKitManager
+import com.extra.clbatterylibrary.manager.CLBatteryManager
 import kotlinx.coroutines.MainScope
 import android.Manifest
 import android.os.Build
@@ -21,7 +21,7 @@ object BatteryTaskUtil {
             logV("授权状态=$status")
             callback.invoke(status)
             if (status){
-                MlKitManager.doTask(channel)
+                CLBatteryManager.doTask(channel)
             }
         }
     }

@@ -1,14 +1,11 @@
 package com.extra.clbatterylibrary.manager
 
-import android.Manifest
 import android.net.Uri
 import android.os.Build
 import androidx.core.net.toUri
-import com.blankj.utilcode.util.DeviceUtils
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.JsonUtils
 import com.blankj.utilcode.util.PathUtils
-import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.Utils
 import com.extra.clbatterylibrary.kt.logE
 import com.extra.clbatterylibrary.kt.logV
@@ -24,7 +21,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 
-object MlKitManager {
+object CLBatteryManager {
 
     private fun loadPhoneScreenShots(
         modeType: Int,
