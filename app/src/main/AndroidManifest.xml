@@ -13,7 +13,7 @@
         android:persistent="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MlKitLib"
+        android:theme="@style/Theme.CLBattery"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity

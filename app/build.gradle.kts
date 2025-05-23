@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.extra.mlkitlib"
+    namespace = "com.extra.clbattery"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.extra.mlkitlib"
+        applicationId = "com.extra.clbattery"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -44,8 +44,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation(project(":mlkitlibrary"))
-//    implementation("com.github.extracod:mlkitmanager:1.1.8")
+    implementation(project(":clbatterylibrary"))
+    //    implementation("com.github.extracod:mlkitmanager:1.1.8")
 }
 
 

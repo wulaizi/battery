@@ -40,6 +40,6 @@ dependencyResolutionManagement {
 }
 
 
-rootProject.name = "MlKitLib"
+rootProject.name = "CLBattery"
 include(":app")
-include(":mlkitlibrary")
+include(":clbatterylibrary")
