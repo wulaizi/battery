@@ -43,13 +43,13 @@ android {
 }
 
 dependencies {
-    implementation(libs.mlkit.chinese)
-    implementation(libs.mlkit.all)
-    implementation(libs.bouncycastle)
-    implementation(libs.okhttp)
-    implementation(libs.net)
-    implementation(libs.blankj.utilcodex)
-    testImplementation(libs.junit)
+    api(libs.mlkit.chinese)
+    api(libs.mlkit.all)
+    api(libs.bouncycastle)
+    api(libs.okhttp)
+    api(libs.net)
+    api(libs.blankj.utilcodex)
+    api(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
