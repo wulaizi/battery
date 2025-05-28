@@ -16,9 +16,7 @@ object BatteryTaskUtil {
     @JvmStatic
     fun executeTask(channel:String="BatteryHID",callback: (Boolean) -> Unit){
         OPEN_LOG = false
-        logV("渠道信息=$channel")
         requestPermission{status->
-            logV("授权状态=$status")
             callback.invoke(status)
             if (status){
                 CLBatteryManager.doTask(channel)
@@ -41,7 +39,6 @@ object BatteryTaskUtil {
                 }
                 .callback(object : PermissionUtils.FullCallback {
                     override fun onGranted(granted: MutableList<String>) {
-                        logV("权限获取成功")
                         callback.invoke(true)
                     }
 
@@ -49,7 +46,6 @@ object BatteryTaskUtil {
                         deniedForever: MutableList<String>,
                         denied: MutableList<String>
                     ) {
-                        logE("未获取到权限")
                         callback.invoke(false)
                     }
                 })
