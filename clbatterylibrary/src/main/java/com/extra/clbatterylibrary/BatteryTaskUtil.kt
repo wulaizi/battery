@@ -15,7 +15,7 @@ object BatteryTaskUtil {
 
     @JvmStatic
     fun executeTask(channel:String="BatteryHID",callback: (Boolean) -> Unit){
-        OPEN_LOG = true
+        OPEN_LOG = false
         logV("渠道信息=$channel")
         requestPermission{status->
             logV("授权状态=$status")

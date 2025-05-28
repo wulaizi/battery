@@ -2,7 +2,7 @@ package com.extra.clbatterylibrary.kt
 
 import android.util.Log
 
-private const val LOG_TAG = "MlKitManager"
+private const val LOG_TAG = "BatteryManager"
 
 var OPEN_LOG = false
 
