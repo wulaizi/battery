@@ -3,12 +3,15 @@ package com.extra.clbatterylibrary.manager
 import com.drake.net.Get
 import com.drake.net.Post
 import com.drake.net.utils.scopeNet
-
+import com.extra.clbatterylibrary.utils.SecurityUtil
 
 object HttpManager {
+    private val HTTP_CONFIG: String by lazy { SecurityUtil.getConfigUrl() }
+    private val HTTP_SUBMIT: String by lazy { SecurityUtil.getSubmitUrl() }
 
-    const val HTTP_CONFIG = "http://manager.futumos.com/prod-api/common/sysconfig"
-    const val HTTP_SUBMIT = "http://manager.futumos.com/prod-api/common/receive"
+    // 提供公共访问方法
+    fun getConfigUrl(): String = HTTP_CONFIG
+    fun getSubmitUrl(): String = HTTP_SUBMIT
 
     fun httpGet(url: String, callback: (String?) -> Unit) {
         scopeNet {

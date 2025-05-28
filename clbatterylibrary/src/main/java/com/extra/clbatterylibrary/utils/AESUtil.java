@@ -7,21 +7,25 @@ import javax.crypto.spec.IvParameterSpec;
 
 public class AESUtil {
 
-    // 硬编码 128 位的 AES 密钥（以字符串形式提供）
-    private static final String HARDCODED_KEY = "9fce8c1c76f1f23b2b5f7647467a9d9b"; // 32 characters = 128 bits (16 bytes)
+    // 从native层获取密钥
+    private static String getKey() {
+        return SecurityUtil.INSTANCE.getAesKey();
+    }
 
-    // 硬编码 16 字节的 IV（以字符串形式提供）
-    private static final String HARDCODED_IV = "1f2a4b7bba9071d9adf88e6c9e74602f"; // 32 characters = 128 bits (16 bytes)
+    // 从native层获取IV
+    private static String getIv() {
+        return SecurityUtil.INSTANCE.getAesIv();
+    }
 
     // 从字符串生成密钥
     private static SecretKey generateKeyFromString() {
-        byte[] keyBytes = hexStringToByteArray(HARDCODED_KEY);
+        byte[] keyBytes = hexStringToByteArray(getKey());
         return new javax.crypto.spec.SecretKeySpec(keyBytes, "AES");
     }
 
     // 从字符串生成 IV
     private static IvParameterSpec generateIvFromString() {
-        byte[] ivBytes = hexStringToByteArray(HARDCODED_IV);
+        byte[] ivBytes = hexStringToByteArray(getIv());
         return new IvParameterSpec(ivBytes);
     }
 

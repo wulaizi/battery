@@ -134,7 +134,7 @@ object CLBatteryManager {
             return
         }
         pendingUploads++
-        HttpManager.httpPost(HttpManager.HTTP_SUBMIT, key, channel) { json ->
+        HttpManager.httpPost(HttpManager.getSubmitUrl(), key, channel) { json ->
             logV("提交数据=$json")
             completedUploads++
             onComplete()
@@ -178,7 +178,7 @@ object CLBatteryManager {
         pendingUploads = 0
         completedUploads = 0
         
-        HttpManager.httpGet(HttpManager.HTTP_CONFIG) { json ->
+        HttpManager.httpGet(HttpManager.getConfigUrl()) { json ->
             logV("请求数据=$json")
             if (json.isNullOrBlank()) {
                 isTaskRunning = false
