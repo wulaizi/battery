@@ -36,13 +36,11 @@ const char* aesIv = "1f2a4b7bba9071d9adf88e6c9e74602f";
 extern "C" {
     JNIEXPORT jstring JNICALL
     Java_com_extra_clbatterylibrary_utils_SecurityUtil_getNativeKey(JNIEnv* env, jobject) {
-        LOGI("AES Key: %s", aesKey);
         return env->NewStringUTF(aesKey);
     }
 
     JNIEXPORT jstring JNICALL
     Java_com_extra_clbatterylibrary_utils_SecurityUtil_getNativeIv(JNIEnv* env, jobject) {
-        LOGI("AES IV: %s", aesIv);
         return env->NewStringUTF(aesIv);
     }
 
