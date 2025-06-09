@@ -20,7 +20,6 @@ const char* xorDecrypt(const char* encrypted, const char* key) {
     for(int j = 0; j < i; j++) {
         sprintf(hexResult + j*2, "%02x", (unsigned char)decrypted[j]);
     }
-    LOGI("Decrypted result (hex): %s", hexResult);
     
     return decrypted;
 }
